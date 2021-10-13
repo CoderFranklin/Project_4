@@ -1,4 +1,4 @@
-:root{
+:root{ /*custom property*/
   --dark_text_color: #343e57;
   --light_text_color: #777f8f
   ;
@@ -34,23 +34,28 @@ html{
 }
 .mg-page{
   background-color: #f1f5fe;
-  height: 100vh;
+  /*height: 100vh;*/
+  height: min(670px);
   overflow: hidden;
   display: flex;
 }
 .mg-page__left{
   padding: 200px 20px 0 20px;
   width: 30%;
+  display: flex;
 }
+
 .forms-two-col{
   display: grid;
   grid-template-columns: 50% 50%;
   gap: 10px;
+  display: flex;
 }
 
 .form-group{
   width: 100%;
   margin-bottom: 1.5rem;
+  display: flex;
 }
 .form-group__label{
   display: block;
