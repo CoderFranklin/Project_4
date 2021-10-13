@@ -1,5 +1,5 @@
 //Declared state of form
-let state = { //Input fields from index.html.
+let state = { //Input fields from index.html and it's like a memory card.
   price: getNumber(document.querySelectorAll('[name="price"]')[0].value),
   loan_years: document.querySelectorAll('[name="loan_years"]')[0].value,
   down_payment: document.querySelectorAll('[name="down_payment"]')[0].value,
@@ -74,7 +74,14 @@ for (i = 0; i < inputTexts.length; i++){ //This loop is for multiple forms.
 function updateInputsState(event){
     let name = event.target.name;
     let value = event.target.value;
-    console.log(event)
+    if (name == 'price'){
+        value = getNumber(value);
+    }
+    state = { //Taking all the properties from state
+        ...state,
+        [name]: value
+    }
+    console.log(state)
 }
 
 
