@@ -24,7 +24,7 @@ let totalLoan,
     "rgba(54, 162, 235, 1)",
     "rgba(255, 205, 86, 1)",
     "rgba(75, 192, 192, 1)",
-    "rgba(153, 102, 255, 1)",
+    "rgba(153, 102, 255, 1)"
   ];
 borderColor = [
   "rgba(255, 99, 132, 1)",
@@ -161,10 +161,10 @@ function updateChart(chart, label, color) {
     backgroundColor: color,
     data: [
       monthlyPrincipalInterest,
-      monthlyInterest,
-      monthlyPropertyTaxes,
+      monthlyPropertyTaxes,   
       monthlyHomeInsurance,
       monthlyHOA,
+      monthlyInterest,
     ],
   });
   chart.options.transitions.active.animation.duration = 0;
