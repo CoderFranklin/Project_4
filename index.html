@@ -1,173 +1,152 @@
-//Declared state of form
-let state = {
-  //Input fields from index.html and it's like a memory card.
-  price: getNumber(document.querySelectorAll('[name="price"]')[0].value),
-  loan_years: document.querySelectorAll('[name="loan_years"]')[0].value,
-  down_payment: document.querySelectorAll('[name="down_payment"]')[0].value,
-  interest_rate: document.querySelectorAll('[name="interest_rate"]')[0].value,
-  property_tax: document.querySelectorAll('[name="property_tax"]')[0].value,
-  home_insurance: document.querySelectorAll('[name="home_insurance"]')[0].value,
-  hoa: document.querySelectorAll('[name="hoa"]')[0].value,
-};
-//Declared variables
-let totalLoan,
-  totalMonths,
-  monthlyInterest,
-  monthlyPrincipalInterest,
-  monthlyPropertyTaxes,
-  monthlyHomeInsurance,
-  monthlyHOA,
-  monthlyTotal,
-  labels = ["Principal & Interest", "Property Tax", "Home Insurance", "HOA"], // Will show in the pie chart.
-  backgroundColor = [
-    "rgba(255, 99, 132, 1)",
-    "rgba(54, 162, 235, 1)",
-    "rgba(255, 205, 86, 1)",
-    "rgba(75, 192, 192, 1)",
-    "rgba(153, 102, 255, 1)"
-  ];
-borderColor = [
-  "rgba(255, 99, 132, 1)",
-  "rgba(54, 162, 235, 1)",
-  "rgba(255, 205, 86, 1)",
-  "rgba(75, 192, 192, 1)",
-  "rgba(153, 102, 255, 1)",
-];
-//Removes characters and returns only numbers
-function getNumber(str) {
-  return Number(str.replace(/[^0-9\.-]+/g, ""));
-}
-//Initialize chart js instance
-let ctx = document.getElementById("myChart").getContext("2d");
-let myChart = new Chart(ctx, {
-  type: "doughnut",
-  data: {
-    labels: labels,
-    datasets: [
-      {
-        label: "# of Votes",
-        data: [
-          monthlyPrincipalInterest,
-          monthlyPropertyTaxes,
-          monthlyHomeInsurance,
-          monthlyHOA,
-        ],
-        backgroundColor: backgroundColor,
-        borderColor: borderColor,
-        borderWidth: 1,
-      },
-    ],
-  },
-});
-//Turning off the animations
-myChart.options.animation = false;
+<!DOCTYPE html>
+<html lang="en">
 
-//Add event lister to inputs
-/*let i,
-inputTexts = document.getElementsByClassName("form-group__textInput");
-for (i = 0; i < inputTexts.length; i++) {
-  //This loop is for multiple forms.
-  //console.log(inputTexts[i])
-  inputTexts[i].addEventListener("input", updateInputsState);
-} // Try to merge the for loops into one loop.*/
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project_4</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
 
-/*inputSlides = document.getElementsByClassName("form-group__range-slide");
-for (i = 0; i < inputSlides.length; i++) {
-  //This loop is for multiple forms.
-  //console.log(inputSlides[i])
-  inputSlides[i].addEventListener("input", updateInputsState); //Trigger the updateInputState
-}*/
+<body>
+  <header class="top-header">
+    <div class="top-header__logo">
+      Mortgify
+    </div>
+    <div class="top-header__nav">
+      <a href="#">Sign Up</a>
+    </div>
+  </header>
+  <main class="mg-page">
 
-let inputSlides = document.getElementsByClassName("form-group__range-slide"),
-  inputTexts = document.getElementsByClassName("form-group__textInput");
+    <div class="mg-page__left">
+      <form>
+        <div class="forms-two-col">
+          <div class="form-group">
+            <label class="form-group__label">Price</label>
+            <input name="price" class="form-group__textInput" value="$300,000">
+          </div>
+          <div class="form-group">
+            <label class="form-group__label">Loan years</label>
+            <input name="loan_years" class="form-group__textInput" value="30">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-group__label">Down payment</label>
+          <div class="form-group__range-group">
+            <div class="form-group__range-slide-container">
+              <input name="down_payment" class="form-group__range-slide " type="range" value="10" min="0" max="90"
+                step="1"  >
+              <div class="form-group__range-values">
+                <span class="form-group__range-start">0%</span> <span class="form-group__range-end">90%</span>
+              </div>
+            </div>
+            <span class="form-group__range-total total__down_payment">20%</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-group__label">Interest rate</label>
+          <div class="form-group__range-group">
+            <div class="form-group__range-slide-container">
+              <input name="interest_rate" class="form-group__range-slide" type="range" value="2.99" min="0" max="8"
+                step="0.01"  >
+              <div class="form-group__range-values">
+                <span class="form-group__range-start">0%</span> <span class="form-group__range-end">8%</span>
+              </div>
+            </div>
+            <span class="form-group__range-total total__interest_rate">2.99</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-group__label">Property taxes/yr</label>
+          <div class="form-group__range-group">
+            <div class="form-group__range-slide-container">
+              <input name="property_tax" class="form-group__range-slide" type="range" value="1.2" min="0" max="8"
+                step="0.01"  >
+              <div class="form-group__range-values">
+                <span class="form-group__range-start">0</span> <span class="form-group__range-end">3%</span>
+              </div>
+            </div>
+            <span class="form-group__range-total total__property_tax">1.2</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-group__label">Home Insurance/yr</label>
+          <div class="form-group__range-group">
+            <div class="form-group__range-slide-container">
+              <input name="home_insurance" class="form-group__range-slide" type="range" value="1200" min="0" max="5000"
+                step="10" >
+              <div class="form-group__range-values">
+                <span class="form-group__range-start">0</span> <span class="form-group__range-end">5000</span>
+              </div>
+            </div>
+            <span class="form-group__range-total total__home_insurance">1200</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-group__label">HOA/yr</label>
+          <div class="form-group__range-group">
+            <div class="form-group__range-slide-container">
+              <input name="hoa" class="form-group__range-slide" type="range" value="1200" min="0" max="5000"
+                step="10"  >
+              <div class="form-group__range-values">
+                <span class="form-group__range-start">0</span> <span class="form-group__range-end">5000</span>
+              </div>
+            </div>
+            <span class="form-group__range-total total__hoa">1200</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <button class="form-group__button">Get Results</button>
 
-for (let inputText of inputTexts) {
-  inputText.addEventListener("input", updateInputsState);
-}
-for (let inputSlide of inputSlides) {
-  inputSlide.addEventListener("input", updateInputsState);
-}
+        </div>
+      </form>
+    </div>
+    <div class="mg-page__right">
+      <img
+        src="https://images.pexels.com/photos/280222/pexels-photo-280222.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+        class="image-panel">
+      <div class="mg-results">
+        <div class="mg-results__container">
+          <div class="mg-results__chart">
+            <canvas id="myChart" width="400" height="400"></canvas>
+          </div>
+          <div class="info">
+            <h2 class="info__title">Mortgage Details</h2>
+            <div class="info__details">
+              <label class="info__label">Principal & Interest</label>
+              <span class="info__numbers info__numbers--principal">$1,400</span>
+            </div>
+            <div class="info__details">
+              <label class="info__label">Property Taxes</label>
+              <span class="info__numbers info__numbers--property_taxes">$234</span>
+            </div>
+            <div class="info__details">
+              <label class="info__label">Home Insurance</label>
+              <span class="info__numbers info__numbers--home_insurance">$78</span>
+            </div>
+            <div class="info__details">
+              <label class="info__label">HOA</label>
+              <span class="info__numbers info__numbers--hoa">$78</span>
+            </div>
+            
+            <div class="info__total">
+              <label class="info__label">Total</label>
+              <span class="info__numbers info__numbers--total">$2788</span>
+            </div>
 
-function updateInputsState(event) {
-  let name = event.target.name;
-  let value = event.target.value;
-  if (name == "price") {
-    value = getNumber(value);
-  }
-  //total__down_payment
-  if (event.target.type == "range") {
-    let total = (document.getElementsByClassName(
-      `total__${name}`
-    )[0].innerHTML = `${value}`); //only one element in index.html
-  }
-  state = {
-    //Taking all the properties from state.
-    ...state,
-    [name]: value,
-  };
-  calculateDate();
-}
+          </div>
+        </div>
+      </div>
+    </div>
 
-//Target the form
-document.getElementsByTagName("form")[0].addEventListener("submit", (event) => {
-  event.preventDefault(); //It's doing like a pluse request to a url, but will not with the preventDefault in play.
-  document
-    .getElementsByClassName("mg-page__right")[0]
-    .classList.add("mg-page__right--animate");
-  calculateDate();
-});
 
-function calculateDate() {
-  totalLoan = state.price - state.price * (state.down_payment / 100); //Pemdas
-  totalMonths = state.loan_years * 12;
-  monthlyInterest = state.interest_rate / 100 / 12;
-  monthlyPrincipalInterest = (
-    totalLoan *
-    ((monthlyInterest * (1 + monthlyInterest) ** totalMonths) /
-      ((1 + monthlyInterest) ** totalMonths - 1))
-  ).toFixed(2); //Return a string
-  monthlyPropertyTaxes = (
-    (state.price * (state.property_tax / 100)) /
-    12
-  ).toFixed(2);
-  monthlyHomeInsurance = state.home_insurance / 12;
-  monthlyHOA = state.hoa / 12;
-  monthlyTotal =
-    //Convert a string into a number
-    parseFloat(monthlyPrincipalInterest) +
-    parseFloat(monthlyPropertyTaxes) +
-    parseFloat(monthlyHomeInsurance) +
-    parseFloat(monthlyHOA);
-  document.getElementsByClassName("info__numbers--principal")[0].innerHTML =
-    parseFloat(monthlyPrincipalInterest).toFixed(2);
-  document.getElementsByClassName(
-    "info__numbers--property_taxes"
-  )[0].innerHTML = parseFloat(monthlyPropertyTaxes).toFixed(2);
-  document.getElementsByClassName(
-    "info__numbers--home_insurance"
-  )[0].innerHTML = parseFloat(monthlyHomeInsurance).toFixed(2);
-  document.getElementsByClassName("info__numbers--hoa")[0].innerHTML =
-    parseFloat(monthlyHOA).toFixed(2);
-  document.getElementsByClassName("info__numbers--total")[0].innerHTML =
-    monthlyTotal.toFixed(2);
-  updateChart(myChart, labels, backgroundColor);
-}
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.1.0/dist/chart.min.js"></script>
+  <script src="js/app.js"></script>
 
-//Update Chart
-function updateChart(chart, label, color) {
-  chart.data.datasets.pop();
-  chart.data.datasets.push({
-    labels: labels,
-    backgroundColor: color,
-    data: [
-      monthlyPrincipalInterest,
-      monthlyPropertyTaxes,   
-      monthlyHomeInsurance,
-      monthlyHOA,
-      monthlyInterest,
-    ],
-  });
-  chart.options.transitions.active.animation.duration = 0;
-  chart.update();
-}
-calculateDate;
+</body>
+
+</html>
